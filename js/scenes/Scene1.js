@@ -29,6 +29,7 @@ preload(){
     helloButton.setInteractive();
     helloButton.on('pointerdown', () => { 
     this.scene.start("playGame");
+    this.beamSound.stop();
     });
   }
   update(){

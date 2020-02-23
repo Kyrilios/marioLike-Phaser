@@ -21,12 +21,17 @@ class Scene2 extends Phaser.Scene{
       this.load.atlas('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
       // load map BG
       this.load.image('BG', 'assets/images/BG.png');
+
+      this.load.audio('theme', [
+        'assets/Audio/Torikago.ogg']);
   }
   create() {
+    this.beamSound = this.sound.add("theme");
+    this.beamSound.play();
     // load the map 
     map = this.make.tilemap({key: 'map'});
     // add BG
-    this.add.image(500,400 ,"BG");
+    this.add.image(500,400 ,"BG").setScrollFactor(0);
     // tiles for the ground layer
     var groundTiles = map.addTilesetImage('tiles');
     // create the ground layer
@@ -91,6 +96,7 @@ class Scene2 extends Phaser.Scene{
     });
     // fix the text to the camera
     text.setScrollFactor(0);
+
   }
   update(time, delta) {
     if (cursors.left.isDown)
