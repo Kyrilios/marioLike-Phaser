@@ -22,6 +22,9 @@ class Scene2 extends Phaser.Scene{
       // load map BG
       this.load.image('BG', 'assets/images/BG.png');
 
+      this.load.audio('menu', [
+        'assets/Audio/menu.ogg']);
+
       this.load.audio('theme', [
         'assets/Audio/Torikago.ogg']);
         
