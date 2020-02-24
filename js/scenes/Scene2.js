@@ -24,8 +24,12 @@ class Scene2 extends Phaser.Scene{
 
       this.load.audio('theme', [
         'assets/Audio/Torikago.ogg']);
+        
+      this.load.audio('coinSFX', [
+        'assets/Audio/coinCollect.ogg']);
   }
   create() {
+    this.collectCoin =this.sound.add("coinSFX")
     this.beamSound = this.sound.add("theme");
     this.beamSound.play();
     // load the map 
@@ -49,9 +53,9 @@ class Scene2 extends Phaser.Scene{
     this.physics.world.bounds.height = groundLayer.height;
 
     // create the player sprite    
-    player = this.physics.add.sprite(200, 200, 'player');
+    player = this.physics.add.sprite(100, 1, 'player');
     player.setBounce(0.2); // our player will bounce from items
-    player.setCollideWorldBounds(true); // don't go out of the map    
+   // player.setCollideWorldBounds(true); // don't go out of the map    
     
     // small fix to our player images, we resize the physics body object slightly
     player.body.setSize(player.width, player.height-8);
@@ -126,6 +130,7 @@ function collectCoin(sprite, tile) {
   // this.scene.start('bootGame');
   coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
   score++; // add 10 points to the score
+  this.collectCoin.play();
   text.setText(score); // set the text to show the current score
   return false;
 }
