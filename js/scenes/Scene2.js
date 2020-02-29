@@ -22,9 +22,6 @@ class Scene2 extends Phaser.Scene{
       // load map BG
       this.load.image('BG', 'assets/images/BG.png');
 
-      this.load.audio('menu', [
-        'assets/Audio/menu.ogg']);
-
       this.load.audio('theme', [
         'assets/Audio/Torikago.ogg']);
         
@@ -35,6 +32,7 @@ class Scene2 extends Phaser.Scene{
     this.collectCoin =this.sound.add("coinSFX")
     this.beamSound = this.sound.add("theme");
     this.beamSound.play();
+    this.beamSound.loop();
     // load the map 
     map = this.make.tilemap({key: 'map'});
     // add BG
