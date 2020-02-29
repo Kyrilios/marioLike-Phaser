@@ -135,3 +135,5 @@ function collectCoin(sprite, tile) {
   text.setText(score); // set the text to show the current score
   return false;
 }
+
+//hijosh
