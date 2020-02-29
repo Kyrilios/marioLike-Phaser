@@ -10,7 +10,7 @@ preload(){
   this.load.image('play', 'assets/images/play.png');
   this.load.image('BG', 'assets/images/BG.png');
   this.load.audio('theme', [
-    'assets/Audio/Torikago.ogg'
+    'assets/Audio/menu.ogg'
 ])
   
   
@@ -24,7 +24,7 @@ preload(){
     this.add.image(500,400 ,"BG");
    
     
-    this.titleText = this.add.text(520, 100, 'mArIo GaMe', {fontSize:"60px", fill: '#00ffff' });
+    this.titleText = this.add.text(520, 100, 'mArIo GaMe', {fontSize:"60px", fill: '#00ffff'});
     const helloButton = this.add.image(700, 480, 'play').setScale(.5); 
     helloButton.setInteractive();
     helloButton.on('pointerdown', () => { 
@@ -36,7 +36,7 @@ preload(){
 
     if (Phaser.Input.Keyboard.JustDown(this.Em)) {
       
-      this.beamSound.play();
+      this.beamSound.play();  
       this.beamSound.loop = true;
       }
 

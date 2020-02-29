@@ -30,9 +30,9 @@ class Scene2 extends Phaser.Scene{
   }
   create() {
     this.collectCoin =this.sound.add("coinSFX")
-    this.beamSound = this.sound.add("theme");
-    this.beamSound.play();
-    this.beamSound.loop();
+    this.theme = this.sound.add("theme");
+    this.theme.play();
+    this.theme.loop = true;
     // load the map 
     map = this.make.tilemap({key: 'map'});
     // add BG
