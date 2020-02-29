@@ -27,9 +27,13 @@ class Scene2 extends Phaser.Scene{
         
       this.load.audio('coinSFX', [
         'assets/Audio/coinCollect.ogg']);
+
+      this.load.audio('jumpSFX', [
+        'assets/Audio/jump.ogg']);
   }
   create() {
-    this.collectCoin =this.sound.add("coinSFX")
+    this.collectCoin = this.sound.add("coinSFX");
+    this.jump = this.sound.add("jumpSFX");
     this.beamSound = this.sound.add("theme");
     this.beamSound.play();
     this.beamSound.loop();
@@ -121,8 +125,9 @@ class Scene2 extends Phaser.Scene{
     }
     // jump 
     if (cursors.up.isDown && player.body.onFloor())
-    {
-        player.body.setVelocityY(-500);        
+    { 
+      player.body.setVelocityY(-500);  
+      
     }
   }
 
@@ -131,9 +136,10 @@ function collectCoin(sprite, tile) {
   // this.scene.start('bootGame');
   coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
   score++; // add 10 points to the score
-  this.collectCoin.play();
+  this.jump.play();
+  //this.collectCoin.play();
   text.setText(score); // set the text to show the current score
   return false;
 }
 
-//hijosh
+
