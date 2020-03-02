@@ -134,7 +134,7 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(groundLayer, enemy);
         this.physics.add.collider(leftColliderWall, enemy);
         this.physics.add.collider(rightColliderWall, enemy);
-        this.physics.add.collider(player, enemy);
+        this.physics.add.collider(player, enemy, playerDied, null, this);
 
         coinLayer.setTileIndexCallback(101, collectCoin, this);
         // when the player overlaps with a tile with index 101, collectCoin 
@@ -166,7 +166,7 @@ class Scene2 extends Phaser.Scene {
         // when the player overlaps with a tile with index 17, collectCoin 
         // will be called    
 
-        this.physics.add.overlap(enemy, player, this.playerDied, null, this);
+        //this.physics.add.overlap(enemy, player, this.playerDied, null, this);
 
 
 
