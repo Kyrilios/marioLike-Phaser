@@ -1,9 +1,10 @@
 var map;
 var player;
+var enemy;
 var cursors;
-var groundLayer, coinLayer, coinRed;
+var bgLayer, groundLayer, coinLayer, coinRed, spikeLayer, leftColliderWall, rightColliderWall;
 var text;
-var score = '';
+var score = 0;
 
 
 class Scene2 extends Phaser.Scene {
@@ -18,20 +19,27 @@ class Scene2 extends Phaser.Scene {
         // tiles in spritesheet 
         this.load.spritesheet('tilesheet', 'assets/images/tilesheet.png', { frameWidth: 50, frameHeight: 32 });
         // simple coin image
-        // this.load.image('coin', 'assets/images/coinGold.png');
+        this.load.image('coin32', 'assets/images/coin32.png');
+        this.load.image('coinRed', 'assets/images/coinRed.png');
+        this.load.image('inviWall', 'assets/images/inviWall.png');
+
         // this.load.image('coinRed', 'assets/images/coinRed.png');
-
-
 
         // player animations
         this.load.atlas('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
+
         // load map BG
+        this.load.image('parallax', 'assets/images/pMountain.png');
         this.load.image('BG', 'assets/images/BG.png');
 
-        this.load.audio('theme', [
-            'assets/Audio/Torikago.ogg'
-        ]);
+        //load enemy sprite
+        this.load.image('spike', 'assets/images/spike.png');
+        this.load.image('walkingEnemy', 'assets/images/walkingEnemy.png');
 
+        //load music
+        this.load.audio('theme', [
+            'assets/Audio/themeMusic.ogg'
+        ]);
         this.load.audio('coinSFX', [
             'assets/Audio/coinCollect.ogg'
         ]);
@@ -39,19 +47,26 @@ class Scene2 extends Phaser.Scene {
         this.load.audio('jumpSFX', [
             'assets/Audio/jump.ogg'
         ]);
+
+
     }
 
     create() {
 
         this.collectCoin = this.sound.add("coinSFX");
         this.jump = this.sound.add("jumpSFX");
-        this.beamSound = this.sound.add("theme");
-        this.beamSound.play();
-        this.beamSound.loop = true;
+        this.jump.Volume = 0.1;
+        this.themeMusic = this.sound.add("theme");
+        this.themeMusic.play();
+        this.themeMusic.loop = true;
         // load the map 
         map = this.make.tilemap({ key: 'map' });
-        // add BG
+        // add BG 
         this.add.image(500, 400, "BG").setScrollFactor(0);
+        this.add.image(300, 500, "parallax").setScale(2).setScrollFactor(.1);
+
+
+
         // tiles for the ground layer
         var groundTiles = map.addTilesetImage('tilesheet');
         // create the ground layer
@@ -59,14 +74,46 @@ class Scene2 extends Phaser.Scene {
         // the player will collide with this layer
         groundLayer.setCollisionByExclusion([-1]);
 
-        // coin image used as tileset
-        // var coinTiles = map.addTilesetImage('coin');
-        // // add coins as tiles
-        // coinLayer = map.createDynamicLayer('Coins', coinTiles, 0, 0);
+        // bg image used as tileset
+        var backgroundA = map.addTilesetImage('tilesheet');
+        // // add BG as tiles
+        bgLayer = map.createDynamicLayer('BG', backgroundA, 0, 0);
 
-        // var RedCoins = map.addTilesetImage('coinRed');
+        // coin image used as tilesheet
+        var coinGold = map.addTilesetImage('coin32');
         // // add coins as tiles
-        // coinRed = map.createDynamicLayer('redCoin', RedCoins, 0, 0);
+        coinLayer = map.createDynamicLayer('Coin', coinGold, 0, 0);
+
+        coinLayer.setCollisionByExclusion([-1]);
+
+        var coinR = map.addTilesetImage('coinRed');
+        // // add coins as tiles
+        coinRed = map.createDynamicLayer('redCoin', coinR, 0, 0);
+
+        coinRed.setCollisionByExclusion([-1]);
+
+        // var iWall = map.addTilesetImage('inviWall');
+        // // add coins as tiles
+        leftColliderWall = map.createDynamicLayer('leftWall', 0, 0);
+
+        leftColliderWall.setCollisionByExclusion([-1]);
+
+        // var iWall = map.addTilesetImage('inviWall');
+        // // add coins as tiles
+        rightColliderWall = map.createDynamicLayer('rightWall', 0, 0);
+
+        rightColliderWall.setCollisionByExclusion([-1]);
+
+
+        //create enemies
+        var redSpike = map.addTilesetImage('spike');
+        // // add coins as tiles
+        spikeLayer = map.createDynamicLayer('Enemy', redSpike, 0, 0);
+        spikeLayer.setCollisionByExclusion([-1]);
+
+        enemy = this.physics.add.sprite(1100, 500, "walkingEnemy");
+        enemy.setBounce(.1);
+
 
         // set the boundaries of our game world
         this.physics.world.bounds.width = groundLayer.width;
@@ -81,19 +128,46 @@ class Scene2 extends Phaser.Scene {
 
         // player will collide with the level tiles 
         this.physics.add.collider(groundLayer, player);
+        this.physics.add.collider(coinLayer, player);
+        this.physics.add.collider(coinRed, player);
+        this.physics.add.collider(spikeLayer, player);
+        this.physics.add.collider(groundLayer, enemy);
+        this.physics.add.collider(leftColliderWall, enemy);
+        this.physics.add.collider(rightColliderWall, enemy);
+        this.physics.add.collider(player, enemy);
 
-        // coinLayer.setTileIndexCallback(17, collectCoin, this);
-        // // when the player overlaps with a tile with index 17, collectCoin 
-        // // will be called    
-        // this.physics.add.overlap(player, coinLayer);
+        coinLayer.setTileIndexCallback(101, collectCoin, this);
+        // when the player overlaps with a tile with index 101, collectCoin 
+        // will be called    
+        this.physics.add.overlap(player, coinLayer);
 
-
-
-        // coinRed.setTileIndexCallback(21, collectRedCoin, this);
+        coinRed.setTileIndexCallback(102, collectRedCoin, this);
         // when the player overlaps with a tile with index 17, collectCoin 
         // will be called    
-        // this.physics.add.collider(player, coinRed);
-        // coinRed.setCollisionByExclusion([-1]);
+        this.physics.add.overlap(player, coinRed);
+
+        spikeLayer.setTileIndexCallback(103, playerDied, this);
+        // when the player overlaps with a tile with index 17, collectCoin 
+        // will be called    
+        this.physics.add.overlap(player, spikeLayer);
+
+        leftColliderWall.setTileIndexCallback(104, enemyCollidedLeft, this);
+        // when the player overlaps with a tile with index 17, collectCoin 
+        // will be called    
+        this.physics.add.overlap(enemy, leftColliderWall);
+
+        rightColliderWall.setTileIndexCallback(104, enemyCollidedRight, this);
+        // when the player overlaps with a tile with index 17, collectCoin 
+        // will be called    
+        this.physics.add.overlap(enemy, rightColliderWall);
+
+
+        rightColliderWall.setTileIndexCallback(playerDied, this);
+        // when the player overlaps with a tile with index 17, collectCoin 
+        // will be called    
+
+        this.physics.add.overlap(enemy, player, this.playerDied, null, this);
+
 
 
         // player walk animation
@@ -118,9 +192,6 @@ class Scene2 extends Phaser.Scene {
         // make the camera follow the player
         this.cameras.main.startFollow(player);
 
-        // set background color, so the sky is not black    
-        // this.cameras.main.setBackgroundColor('#ccccff');
-
         // this text will show the score
         text = this.add.text(700, 50, '0', {
             fontSize: '40px',
@@ -128,6 +199,7 @@ class Scene2 extends Phaser.Scene {
         });
         // fix the text to the camera
         text.setScrollFactor(0);
+        enemy.body.setVelocityX(-50);
 
     }
     update(time, delta) {
@@ -149,11 +221,17 @@ class Scene2 extends Phaser.Scene {
         if (cursors.up.isDown && player.body.onFloor()) {
             this.jump.play();
             player.body.setVelocityY(-500);
-
         }
     }
 
 }
+
+function enemyMovement() {
+    enemy.flipX = false;
+    enemy.body.setVelocityX(-50);
+    //enemy.x = 1125;
+}
+
 
 function collectCoin(sprite, tile) {
     // this.scene.start('bootGame');
@@ -169,8 +247,8 @@ function collectCoin(sprite, tile) {
 
 function collectRedCoin(sprite, tile) {
     // this.scene.start('bootGame');
-    coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
-    score++; // add 10 points to the score
+    coinRed.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    score = score + 100; // add 10 points to the score
 
     this.collectCoin.play();
     text.setText(score); // set the text to show the current score
@@ -178,8 +256,20 @@ function collectRedCoin(sprite, tile) {
 
 }
 
+function playerDied() {
+    this.scene.start('death');
 
-function coinOverlap(player, redCoin) {
-    score++;
-    redCoin.kill();
+}
+
+function enemyCollidedLeft() {
+    console.log('enemy collided')
+    enemy.body.setVelocityX(-500);
+    enemy.flipX = true;
+}
+
+function enemyCollidedRight() {
+    console.log('enemy collided')
+    enemy.body.setVelocityX(+500);
+    enemy.flipX = false;
+
 }
