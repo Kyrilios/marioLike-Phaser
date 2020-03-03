@@ -1,8 +1,12 @@
 var map;
 var player;
 var enemy;
+var enemy1;
 var cursors;
-var bgLayer, groundLayer, coinLayer, coinRed, spikeLayer, leftColliderWall, rightColliderWall;
+// var bgLayer, worldLayer, coinsLayer, coinRed, spikeLayer, leftColliderWall, rightColliderWall;
+var redCoinsLayer, coinsLayer, enemySpikeLayer, worldLayer, exitLayer,
+    rightColliderLayer, leftColliderLayer, rightColliderLayer1, leftColliderLayer1,
+    enemyWalkingLayer, bgLayer, exitLayer;
 var text;
 var score = 0;
 
@@ -15,12 +19,12 @@ class Scene2 extends Phaser.Scene {
     }
     preload() {
         // map made with Tiled in JSON format
-        this.load.tilemapTiledJSON('map', 'assets/maps/mapX.json');
+        this.load.tilemapTiledJSON('map', 'assets/maps/mapY.json');
         // tiles in spritesheet 
-        this.load.spritesheet('tilesheet', 'assets/images/tilesheet.png', { frameWidth: 50, frameHeight: 32 });
+        this.load.spritesheet('pixelTiles', 'assets/images/pixelTiles.png', { frameWidth: 50, frameHeight: 32 });
         // simple coin image
-        this.load.image('coin32', 'assets/images/coin32.png');
-        this.load.image('coinRed', 'assets/images/coinRed.png');
+        // this.load.image('coin32', 'assets/images/coin32.png');
+        // this.load.image('coinRed', 'assets/images/coinRed.png');
         this.load.image('inviWall', 'assets/images/inviWall.png');
 
         // this.load.image('coinRed', 'assets/images/coinRed.png');
@@ -33,7 +37,7 @@ class Scene2 extends Phaser.Scene {
         this.load.image('BG', 'assets/images/BG.png');
 
         //load enemy sprite
-        this.load.image('spike', 'assets/images/spike.png');
+        // this.load.image('spike', 'assets/images/spike.png');
         this.load.image('walkingEnemy', 'assets/images/walkingEnemy.png');
 
         //load music
@@ -68,101 +72,125 @@ class Scene2 extends Phaser.Scene {
 
 
         // tiles for the ground layer
-        var groundTiles = map.addTilesetImage('tilesheet');
+        var groundTiles = map.addTilesetImage('pixelTiles');
         // create the ground layer
-        groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+        worldLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
         // the player will collide with this layer
-        groundLayer.setCollisionByExclusion([-1]);
+        worldLayer.setCollisionByExclusion([-1]);
 
         // bg image used as tileset
-        var backgroundA = map.addTilesetImage('tilesheet');
+        var backgroundA = map.addTilesetImage('pixelTiles');
         // // add BG as tiles
         bgLayer = map.createDynamicLayer('BG', backgroundA, 0, 0);
 
         // coin image used as tilesheet
-        var coinGold = map.addTilesetImage('coin32');
+        var coinGold = map.addTilesetImage('pixelTiles');
         // // add coins as tiles
-        coinLayer = map.createDynamicLayer('Coin', coinGold, 0, 0);
+        coinsLayer = map.createDynamicLayer('Coins', coinGold, 0, 0);
 
-        coinLayer.setCollisionByExclusion([-1]);
+        coinsLayer.setCollisionByExclusion([-1]);
 
-        var coinR = map.addTilesetImage('coinRed');
+        var coinR = map.addTilesetImage('pixelTiles');
         // // add coins as tiles
-        coinRed = map.createDynamicLayer('redCoin', coinR, 0, 0);
+        redCoinsLayer = map.createDynamicLayer('redCoins', coinR, 0, 0);
 
-        coinRed.setCollisionByExclusion([-1]);
-
-        // var iWall = map.addTilesetImage('inviWall');
-        // // add coins as tiles
-        leftColliderWall = map.createDynamicLayer('leftWall', 0, 0);
-
-        leftColliderWall.setCollisionByExclusion([-1]);
-
-        // var iWall = map.addTilesetImage('inviWall');
-        // // add coins as tiles
-        rightColliderWall = map.createDynamicLayer('rightWall', 0, 0);
-
-        rightColliderWall.setCollisionByExclusion([-1]);
+        redCoinsLayer.setCollisionByExclusion([-1]);
 
 
-        //create enemies
-        var redSpike = map.addTilesetImage('spike');
-        // // add coins as tiles
-        spikeLayer = map.createDynamicLayer('Enemy', redSpike, 0, 0);
-        spikeLayer.setCollisionByExclusion([-1]);
 
-        enemy = this.physics.add.sprite(1100, 500, "walkingEnemy");
+        var iWall = map.addTilesetImage('inviWall');
+        leftColliderLayer = map.createDynamicLayer('leftCollider', iWall, 0, 0);
+        leftColliderLayer.setCollisionByExclusion([-1]);
+
+        var iWall = map.addTilesetImage('inviWall');
+        rightColliderLayer = map.createDynamicLayer('rightCollider', iWall, 0, 0);
+        rightColliderLayer.setCollisionByExclusion([-1]);
+
+
+
+        var iWall = map.addTilesetImage('inviWall');
+        leftColliderLayer1 = map.createDynamicLayer('leftCollider1', iWall, 0, 0);
+        leftColliderLayer1.setCollisionByExclusion([-1]);
+
+        var iWall = map.addTilesetImage('inviWall');
+        rightColliderLayer1 = map.createDynamicLayer('rightCollider1', iWall, 0, 0);
+        rightColliderLayer1.setCollisionByExclusion([-1]);
+
+
+        var exit = map.addTilesetImage('pixelTiles');
+        exitLayer = map.createDynamicLayer('Exit', exit, 0, 0);
+        exitLayer.setCollisionByExclusion([-1]);
+
+
+        var redSpike = map.addTilesetImage('pixelTiles');
+        enemySpikeLayer = map.createDynamicLayer('enemySpike', redSpike, 0, 0);
+        enemySpikeLayer.setCollisionByExclusion([-1]);
+
+        var enemyWalk = map.addTilesetImage('pixelTiles');
+        enemyWalkingLayer = map.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
+        enemyWalkingLayer.setCollisionByExclusion([-1]);
+
+        enemy = this.physics.add.sprite(2200, 500, "walkingEnemy");
         enemy.setBounce(.1);
+
+        enemy1 = this.physics.add.sprite(2190, 669, "walkingEnemy");
+        enemy1.setBounce(.1);
 
 
         // set the boundaries of our game world
-        this.physics.world.bounds.width = groundLayer.width;
-        this.physics.world.bounds.height = groundLayer.height;
+        this.physics.world.bounds.width = worldLayer.width;
+        this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(100, 600, 'player').setScale(.5);
+        player = this.physics.add.sprite(1875, 431, 'player').setScale(.4);
         player.setBounce(0.2); // our player will bounce from items10
 
-        // small fix to our player images, we resize the physics body object slightly
-        //player.body.setSize(player.width, player.height);
 
-        // player will collide with the level tiles 
-        this.physics.add.collider(groundLayer, player);
-        this.physics.add.collider(coinLayer, player);
-        this.physics.add.collider(coinRed, player);
-        this.physics.add.collider(spikeLayer, player);
-        this.physics.add.collider(groundLayer, enemy);
-        this.physics.add.collider(leftColliderWall, enemy);
-        this.physics.add.collider(rightColliderWall, enemy);
+        this.physics.add.collider(worldLayer, player);
+
+        this.physics.add.collider(exitLayer, player, playerDied, null, this);
+
+        this.physics.add.collider(coinsLayer, player, collectCoin, null, this);
+
+        this.physics.add.collider(redCoinsLayer, player, collectRedCoin, null, this);
+
+        this.physics.add.collider(enemySpikeLayer, player, playerDied, null, this);
+
         this.physics.add.collider(player, enemy, playerDied, null, this);
+        this.physics.add.collider(player, enemy1, playerDied, null, this);
 
-        coinLayer.setTileIndexCallback(101, collectCoin, this);
-        // when the player overlaps with a tile with index 101, collectCoin 
-        // will be called    
-        this.physics.add.overlap(player, coinLayer);
+        this.physics.add.collider(worldLayer, enemy);
+        this.physics.add.collider(worldLayer, enemy1);
 
-        coinRed.setTileIndexCallback(102, collectRedCoin, this);
-        // when the player overlaps with a tile with index 17, collectCoin 
-        // will be called    
-        this.physics.add.overlap(player, coinRed);
+        this.physics.add.collider(leftColliderLayer, enemy);
+        this.physics.add.collider(rightColliderLayer, enemy);
 
-        spikeLayer.setTileIndexCallback(103, playerDied, this);
-        // when the player overlaps with a tile with index 17, collectCoin 
-        // will be called    
-        this.physics.add.overlap(player, spikeLayer);
-
-        leftColliderWall.setTileIndexCallback(104, enemyCollidedLeft, this);
-        // when the player overlaps with a tile with index 17, collectCoin 
-        // will be called    
-        this.physics.add.overlap(enemy, leftColliderWall);
-
-        rightColliderWall.setTileIndexCallback(104, enemyCollidedRight, this);
-        // when the player overlaps with a tile with index 17, collectCoin 
-        // will be called    
-        this.physics.add.overlap(enemy, rightColliderWall);
+        this.physics.add.collider(leftColliderLayer1, enemy1);
+        this.physics.add.collider(rightColliderLayer1, enemy1);
 
 
-        rightColliderWall.setTileIndexCallback(playerDied, this);
+        coinsLayer.setTileIndexCallback(1, collectCoin, this);
+        this.physics.add.overlap(player, coinsLayer);
+
+        redCoinsLayer.setTileIndexCallback(102, collectRedCoin, this);
+        this.physics.add.overlap(player, redCoinsLayer);
+
+        enemySpikeLayer.setTileIndexCallback(103, playerDied, this);
+        this.physics.add.overlap(player, enemySpikeLayer);
+
+        leftColliderLayer.setTileIndexCallback(249, enemyCollidedLeft, this);
+        this.physics.add.overlap(enemy, leftColliderLayer);
+        rightColliderLayer.setTileIndexCallback(249, enemyCollidedRight, this);
+        this.physics.add.overlap(enemy, rightColliderLayer);
+
+        leftColliderLayer1.setTileIndexCallback(249, enemyCollidedLeft1, this);
+        this.physics.add.overlap(enemy1, leftColliderLayer);
+        rightColliderLayer1.setTileIndexCallback(249, enemyCollidedRight1, this);
+        this.physics.add.overlap(enemy1, rightColliderLayer);
+
+
+        // rightColliderWall.setTileIndexCallback(playerDied, this);
+
         // when the player overlaps with a tile with index 17, collectCoin 
         // will be called    
 
@@ -199,7 +227,11 @@ class Scene2 extends Phaser.Scene {
         });
         // fix the text to the camera
         text.setScrollFactor(0);
+
         enemy.body.setVelocityX(-50);
+
+        enemy1.body.setVelocityX(+50);
+        enemy1.flipX = true;
 
     }
     update(time, delta) {
@@ -226,16 +258,16 @@ class Scene2 extends Phaser.Scene {
 
 }
 
-function enemyMovement() {
-    enemy.flipX = false;
-    enemy.body.setVelocityX(-50);
-    //enemy.x = 1125;
-}
+// function enemyMovement() {
+//     enemy.flipX = false;
+//     enemy.body.setVelocityX(-50);
+//     //enemy.x = 1125;
+// }
 
 
 function collectCoin(sprite, tile) {
     // this.scene.start('bootGame');
-    coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    coinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     score++; // add 10 points to the score
 
     this.collectCoin.play();
@@ -247,7 +279,7 @@ function collectCoin(sprite, tile) {
 
 function collectRedCoin(sprite, tile) {
     // this.scene.start('bootGame');
-    coinRed.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    redCoinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     score = score + 100; // add 10 points to the score
 
     this.collectCoin.play();
@@ -262,14 +294,28 @@ function playerDied() {
 }
 
 function enemyCollidedLeft() {
-    console.log('enemy collided')
+    console.log('enemy collided left')
     enemy.body.setVelocityX(-500);
     enemy.flipX = true;
 }
 
 function enemyCollidedRight() {
-    console.log('enemy collided')
+    console.log('enemy collided right')
     enemy.body.setVelocityX(+500);
     enemy.flipX = false;
+
+}
+
+
+function enemyCollidedLeft1() {
+    console.log('enemy1 collided left1')
+    enemy1.body.setVelocityX(-500);
+    enemy1.flipX = true;
+}
+
+function enemyCollidedRight1() {
+    console.log('enemy1 collided right1')
+    enemy1.body.setVelocityX(+500);
+    enemy1.flipX = false;
 
 }
