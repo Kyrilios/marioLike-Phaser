@@ -8,7 +8,7 @@ class death extends Phaser.Scene {
     preload() {
 
         this.load.image('play', 'assets/images/play.png');
-        this.load.image('BG', 'assets/images/BG.png');
+        this.load.image('BG', 'assets/images/mapYpreview.png');
         this.load.image('quit', 'assets/images/quit.png');
         this.load.image('retry', 'assets/images/retry.png');
         this.load.audio('menuTheme', [

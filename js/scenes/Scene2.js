@@ -2,11 +2,13 @@ var map;
 var player;
 var enemy;
 var enemy1;
+var enemy;
+var enemy2;
 var cursors;
 // var bgLayer, worldLayer, coinsLayer, coinRed, spikeLayer, leftColliderWall, rightColliderWall;
 var redCoinsLayer, coinsLayer, enemySpikeLayer, worldLayer, exitLayer,
     rightColliderLayer, leftColliderLayer, rightColliderLayer1, leftColliderLayer1,
-    enemyWalkingLayer, bgLayer, exitLayer;
+    rightColliderLayer2, leftColliderLayer2, enemyWalkingLayer, bgLayer, exitLayer;
 var text;
 var score = 0;
 
@@ -23,8 +25,8 @@ class Scene2 extends Phaser.Scene {
         // tiles in spritesheet 
         this.load.spritesheet('pixelTiles', 'assets/images/pixelTiles.png', { frameWidth: 50, frameHeight: 32 });
         // simple coin image
-        // this.load.image('coin32', 'assets/images/coin32.png');
-        // this.load.image('coinRed', 'assets/images/coinRed.png');
+        this.load.image('pesoGold', 'assets/images/pesoGold.png');
+        this.load.image('pesoRed', 'assets/images/pesoRed.png');
         this.load.image('inviWall', 'assets/images/inviWall.png');
 
         // this.load.image('coinRed', 'assets/images/coinRed.png');
@@ -34,7 +36,7 @@ class Scene2 extends Phaser.Scene {
 
         // load map BG
         this.load.image('parallax', 'assets/images/pMountain.png');
-        this.load.image('BG', 'assets/images/BG.png');
+        this.load.image('BG', 'assets/images/cloudBG.png');
 
         //load enemy sprite
         // this.load.image('spike', 'assets/images/spike.png');
@@ -67,7 +69,7 @@ class Scene2 extends Phaser.Scene {
         map = this.make.tilemap({ key: 'map' });
         // add BG 
         this.add.image(500, 400, "BG").setScrollFactor(0);
-        this.add.image(300, 500, "parallax").setScale(2).setScrollFactor(.1);
+        this.add.image(300, 400, "parallax").setScale(1).setScrollFactor(.2);
 
 
 
@@ -84,13 +86,13 @@ class Scene2 extends Phaser.Scene {
         bgLayer = map.createDynamicLayer('BG', backgroundA, 0, 0);
 
         // coin image used as tilesheet
-        var coinGold = map.addTilesetImage('pixelTiles');
+        var coinGold = map.addTilesetImage('pesoGold');
         // // add coins as tiles
         coinsLayer = map.createDynamicLayer('Coins', coinGold, 0, 0);
 
         coinsLayer.setCollisionByExclusion([-1]);
 
-        var coinR = map.addTilesetImage('pixelTiles');
+        var coinR = map.addTilesetImage('pesoRed');
         // // add coins as tiles
         redCoinsLayer = map.createDynamicLayer('redCoins', coinR, 0, 0);
 
@@ -98,11 +100,11 @@ class Scene2 extends Phaser.Scene {
 
 
 
-        var iWall = map.addTilesetImage('inviWall');
+        // var iWall = map.addTilesetImage('inviWall');
         leftColliderLayer = map.createDynamicLayer('leftCollider', iWall, 0, 0);
         leftColliderLayer.setCollisionByExclusion([-1]);
 
-        var iWall = map.addTilesetImage('inviWall');
+        //var iWall = map.addTilesetImage('inviWall');
         rightColliderLayer = map.createDynamicLayer('rightCollider', iWall, 0, 0);
         rightColliderLayer.setCollisionByExclusion([-1]);
 
@@ -115,6 +117,15 @@ class Scene2 extends Phaser.Scene {
         var iWall = map.addTilesetImage('inviWall');
         rightColliderLayer1 = map.createDynamicLayer('rightCollider1', iWall, 0, 0);
         rightColliderLayer1.setCollisionByExclusion([-1]);
+
+
+        var iWall = map.addTilesetImage('inviWall');
+        leftColliderLayer2 = map.createDynamicLayer('leftCollider2', iWall, 0, 0);
+        leftColliderLayer2.setCollisionByExclusion([-1]);
+
+        var iWall = map.addTilesetImage('inviWall');
+        rightColliderLayer2 = map.createDynamicLayer('rightCollider2', iWall, 0, 0);
+        rightColliderLayer2.setCollisionByExclusion([-1]);
 
 
         var exit = map.addTilesetImage('pixelTiles');
@@ -137,12 +148,17 @@ class Scene2 extends Phaser.Scene {
         enemy1.setBounce(.1);
 
 
+        enemy2 = this.physics.add.sprite(1758, 662, "walkingEnemy");
+        enemy2.setBounce(.1);
+
+
         // set the boundaries of our game world
         this.physics.world.bounds.width = worldLayer.width;
         this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(1875, 431, 'player').setScale(.4);
+        player = this.physics.add.sprite(66, 650, 'player').setScale(.3);
+        player.setCollideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
 
@@ -150,17 +166,15 @@ class Scene2 extends Phaser.Scene {
 
         this.physics.add.collider(exitLayer, player, playerDied, null, this);
 
-        this.physics.add.collider(coinsLayer, player, collectCoin, null, this);
-
-        this.physics.add.collider(redCoinsLayer, player, collectRedCoin, null, this);
-
         this.physics.add.collider(enemySpikeLayer, player, playerDied, null, this);
 
         this.physics.add.collider(player, enemy, playerDied, null, this);
         this.physics.add.collider(player, enemy1, playerDied, null, this);
+        this.physics.add.collider(player, enemy2, playerDied, null, this);
 
         this.physics.add.collider(worldLayer, enemy);
         this.physics.add.collider(worldLayer, enemy1);
+        this.physics.add.collider(worldLayer, enemy2);
 
         this.physics.add.collider(leftColliderLayer, enemy);
         this.physics.add.collider(rightColliderLayer, enemy);
@@ -168,11 +182,14 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(leftColliderLayer1, enemy1);
         this.physics.add.collider(rightColliderLayer1, enemy1);
 
+        this.physics.add.collider(leftColliderLayer2, enemy2);
+        this.physics.add.collider(rightColliderLayer2, enemy2);
 
-        coinsLayer.setTileIndexCallback(1, collectCoin, this);
+
+        coinsLayer.setTileIndexCallback(251, collectCoin, this);
         this.physics.add.overlap(player, coinsLayer);
 
-        redCoinsLayer.setTileIndexCallback(102, collectRedCoin, this);
+        redCoinsLayer.setTileIndexCallback(250, collectRedCoin, this);
         this.physics.add.overlap(player, redCoinsLayer);
 
         enemySpikeLayer.setTileIndexCallback(103, playerDied, this);
@@ -184,9 +201,18 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.overlap(enemy, rightColliderLayer);
 
         leftColliderLayer1.setTileIndexCallback(249, enemyCollidedLeft1, this);
-        this.physics.add.overlap(enemy1, leftColliderLayer);
+        this.physics.add.overlap(enemy1, leftColliderLayer1);
         rightColliderLayer1.setTileIndexCallback(249, enemyCollidedRight1, this);
-        this.physics.add.overlap(enemy1, rightColliderLayer);
+        this.physics.add.overlap(enemy1, rightColliderLayer1);
+
+
+
+        leftColliderLayer2.setTileIndexCallback(249, enemyCollidedLeft2, this);
+        this.physics.add.overlap(enemy1, leftColliderLayer2);
+        rightColliderLayer2.setTileIndexCallback(249, enemyCollidedRight2, this);
+        this.physics.add.overlap(enemy1, rightColliderLayer2);
+
+
 
 
         // rightColliderWall.setTileIndexCallback(playerDied, this);
@@ -232,6 +258,10 @@ class Scene2 extends Phaser.Scene {
 
         enemy1.body.setVelocityX(+50);
         enemy1.flipX = true;
+
+
+        enemy2.body.setVelocityX(+50);
+        enemy2.flipX = true;
 
     }
     update(time, delta) {
@@ -289,7 +319,9 @@ function collectRedCoin(sprite, tile) {
 }
 
 function playerDied() {
+    this.themeMusic.stop();
     this.scene.start('death');
+
 
 }
 
@@ -317,5 +349,18 @@ function enemyCollidedRight1() {
     console.log('enemy1 collided right1')
     enemy1.body.setVelocityX(+500);
     enemy1.flipX = false;
+
+}
+
+function enemyCollidedLeft2() {
+    console.log('enemy2 collided left2')
+    enemy2.body.setVelocityX(+500);
+    enemy2.flipX = false;
+}
+
+function enemyCollidedRight2() {
+    console.log('enemy2 collided right2')
+    enemy2.body.setVelocityX(-500);
+    enemy2.flipX = true;
 
 }
