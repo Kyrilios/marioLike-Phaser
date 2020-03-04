@@ -1,0 +1,45 @@
+    create{
+        //   var iWall = map.addTilesetImage('inviWall');
+        leftColliderLayer1 = map.createDynamicLayer('leftCollider1', 0, 0);
+        leftColliderLayer1.setCollisionByExclusion([-1]);
+
+        // var iWall = map.addTilesetImage('inviWall');
+        rightColliderLayer1 = map.createDynamicLayer('rightCollider1', 0, 0);
+        rightColliderLayer1.setCollisionByExclusion([-1]);
+
+        enemy = this.physics.add.sprite(2200, 500, "walkingEnemy");
+        enemy.setBounce(.1);
+
+        
+        this.physics.add.collider(player, enemy, playerDied, null, this);
+
+        this.physics.add.collider(leftColliderLayer, enemy);
+        this.physics.add.collider(rightColliderLayer, enemy);
+
+
+        leftColliderLayer.setTileIndexCallback(249, enemyCollidedLeft, this);
+        this.physics.add.overlap(enemy, leftColliderLayer);
+        rightColliderLayer.setTileIndexCallback(249, enemyCollidedRight, this);
+        this.physics.add.overlap(enemy, rightColliderLayer);
+
+        
+        enemy.body.setVelocityX(-50);
+}
+
+update {
+
+function enemyCollidedLeft() {
+    console.log('enemy collided left')
+    enemy.body.setVelocityX(-500);
+    enemy.flipX = true;
+}
+
+function enemyCollidedRight() {
+    console.log('enemy collided right')
+    enemy.body.setVelocityX(+500);
+    enemy.flipX = false;
+
+}
+
+
+}

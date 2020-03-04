@@ -1,3 +1,4 @@
+var score = score - score;
 class death extends Phaser.Scene {
     constructor() {
         super("death");
@@ -8,7 +9,7 @@ class death extends Phaser.Scene {
     preload() {
 
         this.load.image('play', 'assets/images/play.png');
-        this.load.image('BG', 'assets/images/mapYpreview.png');
+        this.load.image('BG0', 'assets/images/mapYpreview.png?v=1');
         this.load.image('quit', 'assets/images/quit.png');
         this.load.image('retry', 'assets/images/retry.png');
         this.load.audio('menuTheme', [
@@ -19,7 +20,7 @@ class death extends Phaser.Scene {
     create() {
         this.Em = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         this.beamSound = this.sound.add("menuTheme");
-        this.add.image(500, 400, "BG");
+        this.add.image(500, 400, "BG0");
 
 
         //this.titleText = this.add.text(520, 100, 'You Dieded', { fontSize: "60px", fill: '#00ffff' });
@@ -37,6 +38,7 @@ class death extends Phaser.Scene {
         quitButton.setInteractive();
         quitButton.on('pointerdown', () => {
             this.scene.start("bootGame");
+
 
         });
     }

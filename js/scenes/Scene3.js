@@ -1,15 +1,15 @@
-class Scene2 extends Phaser.Scene {
+class Scene3 extends Phaser.Scene {
     constructor() {
-        super("playGame");
-        // this function will be called when the player touches a coin
+        super("2ndMap");
+        // this function will be called when the player touches a coins
     }
     preload() {
-
-        // map made with Tiled in JSON format
-        this.load.tilemapTiledJSON('map', 'assets/maps/mapY.json');
+        console.log("<2nd map2>")
+            // map2 made with Tiled in JSON format
+        this.load.tilemapTiledJSON('map2', 'assets/maps/mapZ.json');
         // tiles in spritesheet 
         this.load.spritesheet('pixelTiles', 'assets/images/pixelTiles.png', { frameWidth: 50, frameHeight: 32 });
-        // simple coin image
+        // simple coins image
         this.load.image('pesoGold', 'assets/images/pesoGold.png');
         this.load.image('pesoRed', 'assets/images/pesoRed.png');
         this.load.image('inviWall', 'assets/images/inviWall.png');
@@ -19,7 +19,7 @@ class Scene2 extends Phaser.Scene {
         // player animations
         this.load.atlas('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
 
-        // load map BG
+        // load map2 BG
         this.load.image('parallax', 'assets/images/pMountain.png');
         this.load.image('BG', 'assets/images/cloudBG.png');
 
@@ -59,8 +59,8 @@ class Scene2 extends Phaser.Scene {
         this.themeMusic = this.sound.add("theme");
         this.themeMusic.play();
         this.themeMusic.loop = true;
-        // load the map 
-        map = this.make.tilemap({ key: 'map' });
+        // load the map2 
+        map2 = this.make.tilemap({ key: 'map2' });
         // add BG 
         this.add.image(500, 400, "BG").setScrollFactor(0);
         this.add.image(300, 400, "parallax").setScale(1).setScrollFactor(.2);
@@ -68,85 +68,85 @@ class Scene2 extends Phaser.Scene {
 
 
         // tiles for the ground layer
-        var groundTiles = map.addTilesetImage('pixelTiles');
+        var groundTiles = map2.addTilesetImage('pixelTiles');
         // create the ground layer
-        worldLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+        worldLayer = map2.createDynamicLayer('World', groundTiles, 0, 0);
         // the player will collide with this layer
         worldLayer.setCollisionByExclusion([-1]);
 
         // bg image used as tileset
-        var backgroundA = map.addTilesetImage('pixelTiles');
+        var backgroundA = map2.addTilesetImage('pixelTiles');
         // // add BG as tiles
-        bgLayer = map.createDynamicLayer('BG', backgroundA, 0, 0);
+        bgLayer = map2.createDynamicLayer('BG', backgroundA, 0, 0);
 
-        // coin image used as tilesheet
-        var coinGold2 = map.addTilesetImage('pesoGold');
+        // coins image used as tilesheet
+        var coinGold = map2.addTilesetImage('pesoGold');
         // // add coins as tiles
-        coinsLayer = map.createDynamicLayer('Coins', coinGold2, 0, 0);
+        coinsLayer = map2.createDynamicLayer('Coins', coinGold, 0, 0);
 
         coinsLayer.setCollisionByExclusion([-1]);
 
-        var coinR = map.addTilesetImage('pesoRed');
+        var coinR = map2.addTilesetImage('pesoRed');
         // // add coins as tiles
-        redCoinsLayer = map.createDynamicLayer('redCoins', coinR, 0, 0);
+        redCoinsLayer = map2.createDynamicLayer('redCoins', coinR, 0, 0);
 
         redCoinsLayer.setCollisionByExclusion([-1]);
 
 
 
-        // var iWall = map.addTilesetImage('inviWall');
-        leftColliderLayer = map.createDynamicLayer('leftCollider', 0, 0);
+        // var iWall = map2.addTilesetImage('inviWall');
+        leftColliderLayer = map2.createDynamicLayer('leftCollider', 0, 0);
         leftColliderLayer.setCollisionByExclusion([-1]);
 
-        //var iWall = map.addTilesetImage('inviWall');
-        rightColliderLayer = map.createDynamicLayer('rightCollider', 0, 0);
+        //var iWall = map2.addTilesetImage('inviWall');
+        rightColliderLayer = map2.createDynamicLayer('rightCollider', 0, 0);
         rightColliderLayer.setCollisionByExclusion([-1]);
 
 
 
-        //   var iWall = map.addTilesetImage('inviWall');
-        leftColliderLayer1 = map.createDynamicLayer('leftCollider1', 0, 0);
+        //   var iWall = map2.addTilesetImage('inviWall');
+        leftColliderLayer1 = map2.createDynamicLayer('leftCollider1', 0, 0);
         leftColliderLayer1.setCollisionByExclusion([-1]);
 
-        // var iWall = map.addTilesetImage('inviWall');
-        rightColliderLayer1 = map.createDynamicLayer('rightCollider1', 0, 0);
+        // var iWall = map2.addTilesetImage('inviWall');
+        rightColliderLayer1 = map2.createDynamicLayer('rightCollider1', 0, 0);
         rightColliderLayer1.setCollisionByExclusion([-1]);
 
 
-        // var iWall = map.addTilesetImage('inviWall');
-        leftColliderLayer2 = map.createDynamicLayer('leftCollider2', 0, 0);
+        // var iWall = map2.addTilesetImage('inviWall');
+        leftColliderLayer2 = map2.createDynamicLayer('leftCollider2', 0, 0);
         leftColliderLayer2.setCollisionByExclusion([-1]);
 
-        // var iWall = map.addTilesetImage('inviWall');
-        rightColliderLayer2 = map.createDynamicLayer('rightCollider2', 0, 0);
+        // var iWall = map2.addTilesetImage('inviWall');
+        rightColliderLayer2 = map2.createDynamicLayer('rightCollider2', 0, 0);
         rightColliderLayer2.setCollisionByExclusion([-1]);
 
 
-        var exit = map.addTilesetImage('pixelTiles');
-        exitLayer = map.createDynamicLayer('Exit', exit, 0, 0);
+        var exit = map2.addTilesetImage('pixelTiles');
+        exitLayer = map2.createDynamicLayer('Exit', exit, 0, 0);
         exitLayer.setCollisionByExclusion([-1]);
 
 
-        var redSpike = map.addTilesetImage('pixelTiles');
-        enemySpikeLayer = map.createDynamicLayer('enemySpike', redSpike, 0, 0);
+        var redSpike = map2.addTilesetImage('pixelTiles');
+        enemySpikeLayer = map2.createDynamicLayer('enemySpike', redSpike, 0, 0);
         enemySpikeLayer.setCollisionByExclusion([-1]);
 
-        var enemyWalk = map.addTilesetImage('pixelTiles');
-        enemyWalkingLayer = map.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
+        var enemyWalk = map2.addTilesetImage('pixelTiles');
+        enemyWalkingLayer = map2.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
         enemyWalkingLayer.setCollisionByExclusion([-1]);
 
-        enemy = this.physics.add.sprite(2200, 500, "walkingEnemy");
+        enemy = this.physics.add.sprite(1717, 647, "walkingEnemy");
         enemy.setBounce(.1);
 
-        enemy1 = this.physics.add.sprite(2190, 669, "walkingEnemy");
+        enemy1 = this.physics.add.sprite(537, 669, "walkingEnemy");
         enemy1.setBounce(.1);
 
 
-        enemy2 = this.physics.add.sprite(1758, 662, "walkingEnemy");
+        enemy2 = this.physics.add.sprite(1097, 662, "walkingEnemy");
         enemy2.setBounce(.1);
 
 
-        enemy3 = this.physics.add.sprite(390, 560, "walkingEnemy");
+        enemy3 = this.physics.add.sprite(10, 560, "walkingEnemy");
         enemy3.setBounce(.1);
 
 
@@ -155,7 +155,7 @@ class Scene2 extends Phaser.Scene {
         this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(81, 637, 'player').setScale(.3);
+        player = this.physics.add.sprite(357, 615, 'player').setScale(.3);
         player.setCollideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
@@ -212,6 +212,18 @@ class Scene2 extends Phaser.Scene {
         rightColliderLayer2.setTileIndexCallback(249, enemyCollidedRight2, this);
         this.physics.add.overlap(enemy1, rightColliderLayer2);
 
+
+
+
+        // rightColliderWall.setTileIndexCallback(playerDied, this);
+
+        // when the player overlaps with a tile with index 17, collectCoin 
+        // will be called    
+
+        //this.physics.add.overlap(enemy, player, this.playerDied, null, this);
+
+
+
         // player walk animation
         this.anims.create({
             key: 'walk',
@@ -230,7 +242,7 @@ class Scene2 extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
 
         // set bounds so the camera won't go outside the game world
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0, 0, map2.widthInPixels, map2.heightInPixels);
         // make the camera follow the player
         this.cameras.main.startFollow(player);
 
@@ -251,7 +263,7 @@ class Scene2 extends Phaser.Scene {
         enemy1.flipX = true;
 
 
-        enemy2.body.setVelocityX(+50);
+        enemy2.body.setVelocityX(+100);
         enemy2.flipX = true;
 
 
@@ -298,7 +310,7 @@ class Scene2 extends Phaser.Scene {
 
 function collectCoin(sprite, tile) {
     // this.scene.start('bootGame');
-    coinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    coinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coins
     score++; // add 10 points to the score
     this.collectCoin.play();
     text.setText(score); // set the text to show the current score
@@ -309,7 +321,7 @@ function collectCoin(sprite, tile) {
 
 function collectRedCoin(sprite, tile) {
 
-    redCoinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    redCoinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coins
     score = score + 100; // add 10 points to the score
 
     this.collectCoin.play();
@@ -318,7 +330,7 @@ function collectRedCoin(sprite, tile) {
 
 }
 
-function playerSpiked() {
+function playerSpiked(player, enemySpikeLayer) {
     this.playerDieSound.play();
     this.themeMusic.stop();
     this.input.keyboard.enabled = false;
@@ -340,7 +352,7 @@ function playerSpiked() {
 function playerDied(player, enemy, enemy1, enemy2, enemy3) {
 
     if (enemy.body.touching.up) {
-        this.enemyDieSound.play()
+        this.enemyDieSound.play();
         enemy.destroy();
         score += 20;
         text.setText(score);
@@ -365,87 +377,83 @@ function playerDied(player, enemy, enemy1, enemy2, enemy3) {
 
 
     }
-    if (enemy1.body.touching.up) {
-        enemy1.destroy();
-        score += 20;
-        text.setText(score);
-        player.body.setVelocityY(-250);
-    } else {
-        this.themeMusic.stop();
-        player.body.setVelocityY(-250);
-        console.log("enemy 1 killed player")
-        lives -= 1;
-        console.log("player died");
-        this.playerDieSound.play();
+    // if (enemy1.body.touching.up) {
+    //     enemy1.destroy();
+    //     score += 20;
+    //     text.setText(score);
+    //     player.body.setVelocityY(-250);
+    // } else {
+    //     this.themeMusic.stop();
+    //     player.body.setVelocityY(-250);
+    //     console.log("enemy 1 killed player")
+    //     lives -= 1;
+    //     console.log("player died");
+    //     this.playerDieSound.play();
 
-        this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                this.scene.start('death');
-            },
+    //     this.time.addEvent({
+    //         delay: 1000,
+    //         callback: () => {
+    //             this.scene.start('death');
+    //         },
 
-        });
+    //     });
 
-    }
-    if (enemy2.body.touching.up) {
-        enemy2.destroy();
-        score += 20;
-        text.setText(score);
-        player.body.setVelocityY(-250);
-    } else {
-        this.themeMusic.stop();
-        player.body.setVelocityY(-250);
-        console.log("enemy 2 killed player")
-        lives -= 1;
-        console.log("player died");
-        this.playerDieSound.play();
-        this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                this.scene.start('death');
-            },
+    // }
+    // if (enemy2.body.touching.up) {
+    //     enemy2.destroy();
+    //     score += 20;
+    //     text.setText(score);
+    //     player.body.setVelocityY(-250);
+    // } else {
+    //     this.themeMusic.stop();
+    //     player.body.setVelocityY(-250);
+    //     console.log("enemy 2 killed player")
+    //     lives -= 1;
+    //     console.log("player died");
+    //     this.playerDieSound.play();
+    //     this.time.addEvent({
+    //         delay: 1000,
+    //         callback: () => {
+    //             this.scene.start('death');
+    //         },
 
-        });
+    //     });
 
-    }
-    if (enemy3.body.touching.up) {
-        enemy3.destroy();
-        score += 20;
-        text.setText(score);
-        player.body.setVelocityY(-250);
-    } else {
-        this.themeMusic.stop();
-        player.body.setVelocityY(-250);
-        player.input.enabled = false;
-        console.log("enemy 3 killed player")
-        lives -= 1;
-        console.log("player died");
-        this.playerDieSound.play();
-        this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                this.scene.start('death');
-            },
+    // }
+    // if (enemy3.body.touching.up) {
+    //     enemy3.destroy();
+    //     score += 20;
+    //     text.setText(score);
+    //     player.body.setVelocityY(-250);
+    // } else {
+    //     this.themeMusic.stop();
+    //     player.body.setVelocityY(-250);
+    //     player.input.enabled = false;
+    //     console.log("enemy 3 killed player")
+    //     lives -= 1;
+    //     console.log("player died");
+    //     this.playerDieSound.play();
+    //     this.time.addEvent({
+    //         delay: 1000,
+    //         callback: () => {
+    //             this.scene.start('death');
+    //         },
 
-        });
-    }
-
-
-    this.themeMusic.stop();
-    player.body.setVelocityY(-250);
-    console.log("someone killed player")
-
-    this.time.addEvent({
-        delay: 1000,
-        callback: () => {
-            this.scene.start('death');
-        },
-
-    });
+    //     });
+    // }
 
 
+    // this.themeMusic.stop();
+    // player.body.setVelocityY(-250);
+    // console.log("someone killed player")
 
+    // this.time.addEvent({
+    //     delay: 1000,
+    //     callback: () => {
+    //         this.scene.start('death');
+    //     },
 
+    // });
 
 }
 
@@ -456,6 +464,7 @@ function enemyCollidedLeft() {
 }
 
 function enemyCollidedRight() {
+
     console.log('enemy collided right')
     enemy.body.setVelocityX(+500);
     enemy.flipX = false;
@@ -478,18 +487,19 @@ function enemyCollidedRight1() {
 
 function enemyCollidedLeft2() {
     console.log('enemy2 collided left2')
-    enemy2.body.setVelocityX(+500);
-    enemy2.flipX = false;
+    enemy2.body.setVelocityX(-1000);
+    enemy2.flipX = true;
 }
 
 function enemyCollidedRight2() {
     console.log('enemy2 collided right2')
-    enemy2.body.setVelocityX(-500);
-    enemy2.flipX = true;
+    enemy2.body.setVelocityX(+1000);
+    enemy2.flipX = false;
 
 }
 
 function nextScene() {
     this.themeMusic.stop();
     this.scene.start('sceneTransition')
+
 }
