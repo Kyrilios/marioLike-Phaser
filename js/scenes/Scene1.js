@@ -1,4 +1,3 @@
-var lives = 3;
 class Scene1 extends Phaser.Scene {
     constructor() {
         super("bootGame");
@@ -14,9 +13,6 @@ class Scene1 extends Phaser.Scene {
             'assets/Audio/menu.ogg'
         ])
 
-
-
-
     }
 
     create() {
@@ -30,8 +26,8 @@ class Scene1 extends Phaser.Scene {
         helloButton.setInteractive();
         helloButton.on('pointerdown', () => {
             this.beamSound.stop();
-            var lives = 3;
-            this.scene.start("2ndMap");
+            lives = 3;
+            this.scene.start("playGame");
 
         });
     }
@@ -43,8 +39,6 @@ class Scene1 extends Phaser.Scene {
             this.beamSound.loop = true;
 
         }
-
-
 
 
     }

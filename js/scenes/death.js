@@ -22,8 +22,14 @@ class death extends Phaser.Scene {
         this.beamSound = this.sound.add("menuTheme");
         this.add.image(500, 400, "BG0");
 
+        livesText = this.add.text(700, 50, '0', {
+            fontSize: '40px',
+            fill: '#000000'
 
-        //this.titleText = this.add.text(520, 100, 'You Dieded', { fontSize: "60px", fill: '#00ffff' });
+        });
+        livesText.setText("Lives:" + lives)
+            // this.livesText = this.add.text(520, 100, 'You Dieded', lives, { fontSize: "60px", fill: '#00ffff' });
+
 
         const retryButton = this.add.image(700, 380, 'retry').setScale(.5);
         retryButton.setInteractive();
@@ -37,6 +43,7 @@ class death extends Phaser.Scene {
         const quitButton = this.add.image(700, 480, 'quit').setScale(.5);
         quitButton.setInteractive();
         quitButton.on('pointerdown', () => {
+            score = 0;
             this.scene.start("bootGame");
 
 
