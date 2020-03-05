@@ -228,6 +228,16 @@ class Scene3 extends Phaser.Scene {
             frameRate: 10,
         });
 
+        // this.initialTime = 60;
+        // timetext = this.add.text(300, 65, '' + formatTime(this.initialTime), {
+        //     fontSize: '40px',
+        //     fill: '#ffffff'
+
+        // });
+        // timetext.setScrollFactor(0);
+
+        timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
+
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -275,7 +285,7 @@ class Scene3 extends Phaser.Scene {
                 delay: 500,
                 callback: () => {
                     this.input.keyboard.enabled = true;
-                    lives = 3;
+                    // lives = 3;
                     this.scene.start("bootGame");
                 },
 
@@ -303,7 +313,10 @@ class Scene3 extends Phaser.Scene {
         }
     }
 
+
+
 }
+
 
 function nextScene() {
     score = 0;

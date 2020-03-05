@@ -29,9 +29,18 @@ class Scene1 extends Phaser.Scene {
             this.scene.start("2ndMap");
 
         });
+
+        textHighScore = this.add.text(700, 50, '', {
+            fontSize: '40px',
+            fill: '#000000'
+        });
+        // fix the text to the camera
+        textHighScore.setScrollFactor(0);
     }
     update() {
 
+        textHighScore.setText(
+            "Session High score:" + highScore);
         if (Phaser.Input.Keyboard.JustDown(this.Em)) {
 
             this.beamSound.play();

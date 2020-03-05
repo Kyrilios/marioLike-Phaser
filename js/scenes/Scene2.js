@@ -135,6 +135,7 @@ class Scene2 extends Phaser.Scene {
         enemyWalkingLayer = map.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
         enemyWalkingLayer.setCollisionByExclusion([-1]);
 
+
         enemy = this.physics.add.sprite(2200, 500, "walkingEnemy");
         enemy.setBounce(.1);
 
@@ -142,7 +143,7 @@ class Scene2 extends Phaser.Scene {
         enemy1.setBounce(.1);
 
 
-        enemy2 = this.physics.add.sprite(112, 600, "walkingEnemy");
+        enemy2 = this.physics.add.sprite(1705, 600, "walkingEnemy");
         enemy2.setBounce(.1);
 
 

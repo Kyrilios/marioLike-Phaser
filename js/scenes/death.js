@@ -1,4 +1,3 @@
-var score = score - score;
 class death extends Phaser.Scene {
     constructor() {
         super("death");
@@ -27,14 +26,15 @@ class death extends Phaser.Scene {
             fill: '#000000'
 
         });
-        livesText.setText("Lives:" + lives)
-            // this.livesText = this.add.text(520, 100, 'You Dieded', lives, { fontSize: "60px", fill: '#00ffff' });
+        livesText.setText("Lives:" + lives);
+        console.log(lives);
+        // this.livesText = this.add.text(520, 100, 'You Dieded', lives, { fontSize: "60px", fill: '#00ffff' });
 
 
         const retryButton = this.add.image(700, 380, 'retry').setScale(.5);
         retryButton.setInteractive();
         retryButton.on('pointerdown', () => {
-            this.scene.start("playGame");
+            this.scene.start("2ndMap");
 
         });
 
@@ -43,6 +43,7 @@ class death extends Phaser.Scene {
         const quitButton = this.add.image(700, 480, 'quit').setScale(.5);
         quitButton.setInteractive();
         quitButton.on('pointerdown', () => {
+            highScoreSetter();
             score = 0;
             this.scene.start("bootGame");
 

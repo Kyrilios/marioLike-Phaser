@@ -16,12 +16,12 @@ var game = new Phaser.Game(config);
 var map;
 var map2;
 var player;
-var enemy1;
+
 var enemy;
+var enemy1;
 var enemy2;
 var enemy3;
 var cursors;
-// var bgLayer, worldLayer, coinsLayer, coinRed, spikeLayer, leftColliderWall, rightColliderWall;
 var redCoinsLayer, coinsLayer, enemySpikeLayer, worldLayer, exitLayer,
     rightColliderLayer, leftColliderLayer, rightColliderLayer1, leftColliderLayer1,
     rightColliderLayer2, leftColliderLayer2, rightColliderLayer2M2, leftColliderLayer2M2, enemyWalkingLayer, bgLayer, exitLayer;
@@ -30,8 +30,10 @@ var livesText;
 var timetext;
 var timedEvent;
 var score = 0;
+var textHighScore;
+var highScore = 0;
 var lives = 3;
-var maxTime = 60;
+var maxTime = 2;
 
 
 //Functions//
@@ -125,7 +127,7 @@ function playerSpiked() {
     this.themeMusic.stop();
     this.input.keyboard.enabled = false;
     player.body.setVelocityY(-2000);
-    this.
+
     lives -= 1;
     console.log('lives:', lives);
 
@@ -268,12 +270,21 @@ function formatTime(seconds) {
 
 function onEvent() {
     // One second
-
     this.initialTime -= 1;
     timetext.setText(formatTime(this.initialTime));
-    if (this.initialTime === 0) {
+    if (this.initialTime <= 0) {
         lives -= 1;
-        this.themeMusic.stop();
+        highScoreSetter();
+
         this.scene.start("death");
+    }
+}
+
+function highScoreSetter() {
+    console.log("death score:" +
+        score);
+
+    if (score > highScore) {
+        highScore = score;
     }
 }
