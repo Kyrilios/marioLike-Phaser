@@ -214,16 +214,6 @@ class Scene3 extends Phaser.Scene {
 
 
 
-
-        // rightColliderWall.setTileIndexCallback(playerDied, this);
-
-        // when the player overlaps with a tile with index 17, collectCoin 
-        // will be called    
-
-        //this.physics.add.overlap(enemy, player, this.playerDied, null, this);
-
-
-
         // player walk animation
         this.anims.create({
             key: 'walk',
@@ -254,6 +244,13 @@ class Scene3 extends Phaser.Scene {
         // fix the text to the camera
         text.setScrollFactor(0);
 
+        this.initialTime = maxTime;
+        timetext = this.add.text(300, 65, '' + formatTime(this.initialTime), {
+            fontSize: '40px',
+            fill: '#ffffff'
+
+        });
+        timetext.setScrollFactor(0);
 
 
 

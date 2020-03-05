@@ -4,7 +4,6 @@ class Scene1 extends Phaser.Scene {
 
     }
 
-
     preload() {
 
         this.load.image('play', 'assets/images/play.png');
@@ -27,7 +26,7 @@ class Scene1 extends Phaser.Scene {
         helloButton.on('pointerdown', () => {
             this.beamSound.stop();
             lives = 3;
-            this.scene.start("playGame");
+            this.scene.start("2ndMap");
 
         });
     }
@@ -39,7 +38,6 @@ class Scene1 extends Phaser.Scene {
             this.beamSound.loop = true;
 
         }
-
-
     }
+
 }

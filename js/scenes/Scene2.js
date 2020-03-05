@@ -47,7 +47,6 @@ class Scene2 extends Phaser.Scene {
             'assets/Audio/enemyDie.ogg'
         ]);
 
-
     }
 
     create() {
@@ -64,6 +63,7 @@ class Scene2 extends Phaser.Scene {
         // add BG 
         this.add.image(500, 400, "BG").setScrollFactor(0);
         this.add.image(300, 400, "parallax").setScale(1).setScrollFactor(.2);
+
 
 
 
@@ -142,7 +142,7 @@ class Scene2 extends Phaser.Scene {
         enemy1.setBounce(.1);
 
 
-        enemy2 = this.physics.add.sprite(1700, 662, "walkingEnemy");
+        enemy2 = this.physics.add.sprite(112, 600, "walkingEnemy");
         enemy2.setBounce(.1);
 
 
@@ -155,7 +155,7 @@ class Scene2 extends Phaser.Scene {
         this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(1700, 200, 'player').setScale(.3);
+        player = this.physics.add.sprite(128, 200, 'player').setScale(.3);
         player.setCollideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
@@ -226,6 +226,15 @@ class Scene2 extends Phaser.Scene {
             frameRate: 10,
         });
 
+        this.initialTime = 60;
+        timetext = this.add.text(300, 65, '' + formatTime(this.initialTime), {
+            fontSize: '40px',
+            fill: '#ffffff'
+
+        });
+        timetext.setScrollFactor(0);
+
+        timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -241,9 +250,6 @@ class Scene2 extends Phaser.Scene {
         });
         // fix the text to the camera
         text.setScrollFactor(0);
-
-
-
 
         enemy.body.setVelocityX(-50);
 
@@ -290,8 +296,8 @@ class Scene2 extends Phaser.Scene {
 
 }
 
-
 function nextSceneToTrans() {
+    initialTime = maxTime;
     this.themeMusic.stop();
     this.scene.start('sceneTransition')
 }

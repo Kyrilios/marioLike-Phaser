@@ -16,7 +16,6 @@ var game = new Phaser.Game(config);
 var map;
 var map2;
 var player;
-var enemy;
 var enemy1;
 var enemy;
 var enemy2;
@@ -28,11 +27,20 @@ var redCoinsLayer, coinsLayer, enemySpikeLayer, worldLayer, exitLayer,
     rightColliderLayer2, leftColliderLayer2, rightColliderLayer2M2, leftColliderLayer2M2, enemyWalkingLayer, bgLayer, exitLayer;
 var text;
 var livesText;
+var timetext;
+var timedEvent;
 var score = 0;
 var lives = 3;
+var maxTime = 60;
 
 
+//Functions//
 
+function updateCounter() {
+
+    total++;
+
+}
 
 function enemyCollidedLeft() {
     console.log('enemy collided left')
@@ -87,9 +95,6 @@ function enemyCollidedRight2M2() {
 
 }
 
-
-
-
 function collectCoin(sprite, tile) {
     // this.scene.start('bootGame');
     coinsLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
@@ -99,7 +104,6 @@ function collectCoin(sprite, tile) {
         score);
     // set the text to show the current score
     return false;
-
 
 }
 
@@ -249,4 +253,27 @@ function playerDied(player, enemy, enemy1, enemy2, enemy3) {
 
     });
 
+}
+
+function formatTime(seconds) {
+    // Minutes
+    var minutes = Math.floor(seconds / 60);
+    // Seconds
+    var partInSeconds = seconds % 60;
+    // Adds left zeros to seconds
+    partInSeconds = partInSeconds.toString().padStart(2, '0');
+    // Returns formated time
+    return `${minutes}:${partInSeconds}`;
+}
+
+function onEvent() {
+    // One second
+
+    this.initialTime -= 1;
+    timetext.setText(formatTime(this.initialTime));
+    if (this.initialTime === 0) {
+        lives -= 1;
+        this.themeMusic.stop();
+        this.scene.start("death");
+    }
 }
