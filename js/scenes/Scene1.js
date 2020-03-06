@@ -26,7 +26,7 @@ class Scene1 extends Phaser.Scene {
         helloButton.on('pointerdown', () => {
             this.beamSound.stop();
             lives = 3;
-            this.scene.start("2ndMap");
+            this.scene.start("playGame");
 
         });
 
@@ -34,7 +34,7 @@ class Scene1 extends Phaser.Scene {
             fontSize: '40px',
             fill: '#000000'
         });
-        // fix the text to the camera
+        // fix the text to the camera   
         textHighScore.setScrollFactor(0);
     }
     update() {

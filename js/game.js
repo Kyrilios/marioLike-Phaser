@@ -9,22 +9,24 @@ var config = {
             debug: false
         }
     },
-    scene: [Scene1, Scene2, Scene3, death, sceneTransition]
+    scene: [Scene1, Scene2, Scene3, Scene4, Scene5, death, sceneTransition, sceneTransition2]
 }
 
 var game = new Phaser.Game(config);
 var map;
 var map2;
+var map3;
+var map4;
 var player;
-
 var enemy;
 var enemy1;
 var enemy2;
 var enemy3;
 var cursors;
+var themeMusic;
 var redCoinsLayer, coinsLayer, enemySpikeLayer, worldLayer, exitLayer,
     rightColliderLayer, leftColliderLayer, rightColliderLayer1, leftColliderLayer1,
-    rightColliderLayer2, leftColliderLayer2, rightColliderLayer2M2, leftColliderLayer2M2, enemyWalkingLayer, bgLayer, exitLayer;
+    rightColliderLayer2, leftColliderLayer2, rightColliderLayer2M2, leftColliderLayer2M2, enemyWalkingLayer, bgLayer, exitLayer, portal;
 var text;
 var livesText;
 var timetext;
@@ -33,7 +35,9 @@ var score = 0;
 var textHighScore;
 var highScore = 0;
 var lives = 3;
-var maxTime = 2;
+var maxTime = 60;
+var playerX = 50;
+var playerY = 666;
 
 
 //Functions//
@@ -43,6 +47,7 @@ function updateCounter() {
     total++;
 
 }
+
 
 function enemyCollidedLeft() {
     console.log('enemy collided left')
@@ -268,21 +273,9 @@ function formatTime(seconds) {
     return `${minutes}:${partInSeconds}`;
 }
 
-function onEvent() {
-    // One second
-    this.initialTime -= 1;
-    timetext.setText(formatTime(this.initialTime));
-    if (this.initialTime <= 0) {
-        lives -= 1;
-        highScoreSetter();
 
-        this.scene.start("death");
-    }
-}
 
 function highScoreSetter() {
-    console.log("death score:" +
-        score);
 
     if (score > highScore) {
         highScore = score;

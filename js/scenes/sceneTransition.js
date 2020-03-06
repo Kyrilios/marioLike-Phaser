@@ -14,8 +14,6 @@ class sceneTransition extends Phaser.Scene {
         // ])
 
 
-
-
     }
 
     create() {

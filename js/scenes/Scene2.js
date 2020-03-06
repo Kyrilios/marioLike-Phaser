@@ -156,7 +156,7 @@ class Scene2 extends Phaser.Scene {
         this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(128, 200, 'player').setScale(.3);
+        player = this.physics.add.sprite(playerX, playerY, 'player').setScale(.3);
         player.setCollideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
@@ -268,6 +268,7 @@ class Scene2 extends Phaser.Scene {
             this.time.addEvent({
                 delay: 500,
                 callback: () => {
+                    this.themeMusic.stop();
                     this.input.keyboard.enabled = true;
                     this.scene.start("bootGame");
                 },
@@ -300,5 +301,18 @@ class Scene2 extends Phaser.Scene {
 function nextSceneToTrans() {
     initialTime = maxTime;
     this.themeMusic.stop();
-    this.scene.start('sceneTransition')
+    this.scene.start('sceneTransition2')
+}
+
+
+function onEvent() {
+    // One second
+    this.initialTime -= 1;
+    timetext.setText(formatTime(this.initialTime));
+    if (this.initialTime === 0) {
+        lives -= 1;
+        highScoreSetter();
+        this.themeMusic.stop();
+        this.scene.start("death");
+    }
 }

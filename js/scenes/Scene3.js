@@ -51,6 +51,7 @@ class Scene3 extends Phaser.Scene {
     }
 
     create() {
+        this.Es = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.enemyDieSound = this.sound.add("enemyDieSFX");
         this.playerDieSound = this.sound.add("playerDieSFX");
         this.collectCoin = this.sound.add("coinSFX");
@@ -93,6 +94,10 @@ class Scene3 extends Phaser.Scene {
         redCoinsLayer.setCollisionByExclusion([-1]);
 
 
+        var portalTile = map2.addTilesetImage('pixelTiles');
+        portal = map2.createDynamicLayer('Portal', portalTile, 0, 0);
+        portal.setCollisionByExclusion([-1])
+
 
         // var iWall = map2.addTilesetImage('inviWall');
         leftColliderLayer = map2.createDynamicLayer('leftCollider', 0, 0);
@@ -120,6 +125,8 @@ class Scene3 extends Phaser.Scene {
         // var iWall = map2.addTilesetImage('inviWall');
         rightColliderLayer2 = map2.createDynamicLayer('rightCollider2', 0, 0);
         rightColliderLayer2.setCollisionByExclusion([-1]);
+
+
 
 
         var exit = map2.addTilesetImage('pixelTiles');
@@ -155,7 +162,7 @@ class Scene3 extends Phaser.Scene {
         this.physics.world.bounds.height = worldLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(357, 615, 'player').setScale(.3);
+        player = this.physics.add.sprite(playerX, playerY, 'player').setScale(.3);
         player.setCollideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
@@ -170,6 +177,8 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(player, enemy1, playerDied, null, this);
         this.physics.add.collider(player, enemy2, playerDied, null, this);
         this.physics.add.collider(player, enemy3, playerDied, null, this);
+
+        this.physics.add.collider(player, portal, secretMap, null, this);
 
         this.physics.add.collider(worldLayer, enemy);
         this.physics.add.collider(worldLayer, enemy1);
@@ -188,6 +197,10 @@ class Scene3 extends Phaser.Scene {
 
         coinsLayer.setTileIndexCallback(251, collectCoin, this);
         this.physics.add.overlap(player, coinsLayer);
+
+
+        // portal.setTileIndexCallback(15, nextScene, this);
+        // this.physics.add.overlap(player, portal);
 
         redCoinsLayer.setTileIndexCallback(250, collectRedCoin, this);
         this.physics.add.overlap(player, redCoinsLayer);
@@ -285,7 +298,7 @@ class Scene3 extends Phaser.Scene {
                 delay: 500,
                 callback: () => {
                     this.input.keyboard.enabled = true;
-                    // lives = 3;
+                    this.themeMusic.stop();
                     this.scene.start("bootGame");
                 },
 
@@ -317,9 +330,21 @@ class Scene3 extends Phaser.Scene {
 
 }
 
-
 function nextScene() {
+    highScoreSetter();
     score = 0;
     this.themeMusic.stop();
-    this.scene.start('bootGame')
+    this.scene.start('3rdMap')
+}
+
+function secretMap() {
+    if (Phaser.Input.Keyboard.JustDown(this.Es)) {
+
+        this.themeMusic.stop();
+        console.log("<secret map>")
+        this.scene.start('3rdMap')
+
+    }
+
+
 }
