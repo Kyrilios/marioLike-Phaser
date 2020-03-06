@@ -50,6 +50,7 @@ class Scene2 extends Phaser.Scene {
     }
 
     create() {
+        deathInMap1 = 1
         this.enemyDieSound = this.sound.add("enemyDieSFX");
         this.playerDieSound = this.sound.add("playerDieSFX");
         this.collectCoin = this.sound.add("coinSFX");
@@ -157,7 +158,7 @@ class Scene2 extends Phaser.Scene {
 
         // create the player sprite    
         player = this.physics.add.sprite(playerX, playerY, 'player').setScale(.3);
-        player.setCollideWorldBounds = true;
+        player.body.collideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
 
@@ -227,7 +228,7 @@ class Scene2 extends Phaser.Scene {
             frameRate: 10,
         });
 
-        this.initialTime = 60;
+        this.initialTime = maxTime;
         timetext = this.add.text(300, 65, '' + formatTime(this.initialTime), {
             fontSize: '40px',
             fill: '#ffffff'
@@ -264,13 +265,13 @@ class Scene2 extends Phaser.Scene {
         enemy3.body.setVelocityX(-100);
     }
     update(time, delta) {
-        if (lives == 0) {
+        if (lives == 0 || lives < 0) {
             this.time.addEvent({
                 delay: 500,
                 callback: () => {
                     this.themeMusic.stop();
                     this.input.keyboard.enabled = true;
-                    this.scene.start("bootGame");
+                    this.scene.start("gameOver");
                 },
 
             });
@@ -299,9 +300,10 @@ class Scene2 extends Phaser.Scene {
 }
 
 function nextSceneToTrans() {
+    highScoreSetter();
     initialTime = maxTime;
     this.themeMusic.stop();
-    this.scene.start('sceneTransition2')
+    this.scene.start('sceneTransition')
 }
 
 

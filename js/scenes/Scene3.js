@@ -4,7 +4,7 @@ class Scene3 extends Phaser.Scene {
         // this function will be called when the player touches a coins
     }
     preload() {
-        console.log("<2nd map2>")
+        console.log("<2nd map>")
             // map2 made with Tiled in JSON format
         this.load.tilemapTiledJSON('map2', 'assets/maps/mapZ.json');
         // tiles in spritesheet 
@@ -51,6 +51,8 @@ class Scene3 extends Phaser.Scene {
     }
 
     create() {
+        deathInMap1 = 0;
+        deathInMap2 = 1;
         this.Es = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.enemyDieSound = this.sound.add("enemyDieSFX");
         this.playerDieSound = this.sound.add("playerDieSFX");
@@ -163,13 +165,13 @@ class Scene3 extends Phaser.Scene {
 
         // create the player sprite    
         player = this.physics.add.sprite(playerX, playerY, 'player').setScale(.3);
-        player.setCollideWorldBounds = true;
+        player.body.collideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
 
         this.physics.add.collider(worldLayer, player);
 
-        this.physics.add.collider(exitLayer, player, nextScene, null, this);
+        this.physics.add.collider(exitLayer, player, nextScene3, null, this);
 
         this.physics.add.collider(enemySpikeLayer, player, playerSpiked, null, this);
 
@@ -199,7 +201,7 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.overlap(player, coinsLayer);
 
 
-        // portal.setTileIndexCallback(15, nextScene, this);
+        // portal.setTileIndexCallback(15, nextScene3, this);
         // this.physics.add.overlap(player, portal);
 
         redCoinsLayer.setTileIndexCallback(250, collectRedCoin, this);
@@ -293,13 +295,13 @@ class Scene3 extends Phaser.Scene {
 
     }
     update(time, delta) {
-        if (lives == 0) {
+        if (lives == 0 || lives < 0) {
             this.time.addEvent({
                 delay: 500,
                 callback: () => {
                     this.input.keyboard.enabled = true;
                     this.themeMusic.stop();
-                    this.scene.start("bootGame");
+                    this.scene.start("gameOver");
                 },
 
             });
@@ -330,11 +332,13 @@ class Scene3 extends Phaser.Scene {
 
 }
 
-function nextScene() {
+function nextScene3() {
     highScoreSetter();
-    score = 0;
+    // score = 0;
     this.themeMusic.stop();
-    this.scene.start('3rdMap')
+    playerX = 50;
+    playerY = 655;
+    this.scene.start('sceneTransition2')
 }
 
 function secretMap() {

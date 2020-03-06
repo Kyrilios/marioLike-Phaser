@@ -32,7 +32,7 @@ class sceneTransition2 extends Phaser.Scene {
         this.time.addEvent({
             delay: 1000,
             callback: () => {
-                this.scene.start('3rdMap');
+                this.scene.start('4thMap');
             },
 
         });

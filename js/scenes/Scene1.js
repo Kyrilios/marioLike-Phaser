@@ -26,9 +26,20 @@ class Scene1 extends Phaser.Scene {
         helloButton.on('pointerdown', () => {
             this.beamSound.stop();
             lives = 3;
-            this.scene.start("playGame");
+            playerX = 50;
+            playerY = 666;
+            score = 0;
+            deathInMap1 = 0;
+            deathInMap2 = 0;
+            deathInMap3 = 0;
+            deathInMap4 = 0;
+            console.log("maxTime:",
+                maxTime);
+            this.scene.start("4thMap");
 
         });
+        this.beamSound.play();
+        this.beamSound.loop = true;
 
         textHighScore = this.add.text(700, 50, '', {
             fontSize: '40px',
@@ -41,8 +52,9 @@ class Scene1 extends Phaser.Scene {
 
         textHighScore.setText(
             "Session High score:" + highScore);
-        if (Phaser.Input.Keyboard.JustDown(this.Em)) {
 
+        if (Phaser.Input.Keyboard.JustDown(this.Em)) {
+            this.beamSound.stop();
             this.beamSound.play();
             this.beamSound.loop = true;
 

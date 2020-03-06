@@ -11,14 +11,14 @@ class death extends Phaser.Scene {
         this.load.image('BG0', 'assets/images/mapYpreview.png?v=1');
         this.load.image('quit', 'assets/images/quit.png');
         this.load.image('retry', 'assets/images/retry.png');
-        this.load.audio('menuTheme', [
-            'assets/Audio/menu.ogg'
+        this.load.audio('deathTheme', [
+            'assets/Audio/deathMusic.ogg'
         ])
     }
 
     create() {
-        this.Em = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
-        this.beamSound = this.sound.add("menuTheme");
+        this.deathSound = this.sound.add("deathTheme");
+        this.deathSound.play();
         this.add.image(500, 400, "BG0");
 
         livesText = this.add.text(700, 50, '0', {
@@ -34,7 +34,21 @@ class death extends Phaser.Scene {
         const retryButton = this.add.image(700, 380, 'retry').setScale(.5);
         retryButton.setInteractive();
         retryButton.on('pointerdown', () => {
-            this.scene.start("2ndMap");
+            this.deathSound.stop()
+            if (deathInMap1 == 1) {
+                this.scene.start("playGame");
+
+            } else if (deathInMap2 == 1) {
+                this.scene.start("2ndMap");
+
+            } else if (deathInMap3 == 1) {
+                this.scene.start("3rdMap")
+            } else if (deathInMap4 == 1) {
+                this.scene.start("4thMap");
+            }
+
+
+
 
         });
 
@@ -45,18 +59,17 @@ class death extends Phaser.Scene {
         quitButton.on('pointerdown', () => {
             highScoreSetter();
             score = 0;
+            this.deathSound.stop()
             this.scene.start("bootGame");
+            console.log("play death bgm");
+
+
 
 
         });
     }
     update() {
 
-        if (Phaser.Input.Keyboard.JustDown(this.Em)) {
-
-            this.beamSound.play();
-            this.beamSound.loop = true;
-        }
 
     }
 }

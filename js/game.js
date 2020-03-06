@@ -9,7 +9,7 @@ var config = {
             debug: false
         }
     },
-    scene: [Scene1, Scene2, Scene3, Scene4, Scene5, death, sceneTransition, sceneTransition2]
+    scene: [Scene1, Scene2, Scene3, Scene4, Scene5, death, sceneTransition, sceneTransition2, congratulations, gameOver]
 }
 
 var game = new Phaser.Game(config);
@@ -36,8 +36,13 @@ var textHighScore;
 var highScore = 0;
 var lives = 3;
 var maxTime = 60;
+var intialTime;
 var playerX = 50;
 var playerY = 666;
+var deathInMap1 = 0;
+var deathInMap2 = 0;
+var deathInMap3 = 0;
+var deathInMap4 = 0;
 
 
 //Functions//
@@ -51,13 +56,13 @@ function updateCounter() {
 
 function enemyCollidedLeft() {
     console.log('enemy collided left')
-    enemy.body.setVelocityX(-500);
+    enemy.body.setVelocityX(-1500);
     enemy.flipX = true;
 }
 
 function enemyCollidedRight() {
     console.log('enemy collided right')
-    enemy.body.setVelocityX(+500);
+    enemy.body.setVelocityX(+1500);
     enemy.flipX = false;
 
 }
@@ -132,7 +137,7 @@ function playerSpiked() {
     this.themeMusic.stop();
     this.input.keyboard.enabled = false;
     player.body.setVelocityY(-2000);
-
+    player.body.collideWorldBounds = false;
     lives -= 1;
     console.log('lives:', lives);
 
@@ -158,6 +163,7 @@ function playerDied(player, enemy, enemy1, enemy2, enemy3) {
     } else {
         this.themeMusic.stop();
         this.input.keyboard.enabled = false;
+        player.body.collideWorldBounds = false;
         player.body.setVelocityY(-2000);
         console.log("player died");
         this.playerDieSound.play();

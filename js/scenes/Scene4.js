@@ -51,7 +51,8 @@ class Scene4 extends Phaser.Scene {
     }
 
     create() {
-
+        deathInMap2 = 0;
+        deathInMap3 = 1;
         this.enemyDieSound = this.sound.add("enemyDieSFX");
         this.playerDieSound = this.sound.add("playerDieSFX");
         this.collectCoin = this.sound.add("coinSFX");
@@ -136,19 +137,19 @@ class Scene4 extends Phaser.Scene {
         enemyWalkingLayer = map3.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
         enemyWalkingLayer.setCollisionByExclusion([-1]);
 
-        enemy = this.physics.add.sprite(1717, 647, "walkingEnemy");
-        enemy.setBounce(.1);
+        // enemy = this.physics.add.sprite(1717, 647, "walkingEnemy");
+        // enemy.setBounce(.1);
 
-        enemy1 = this.physics.add.sprite(537, 669, "walkingEnemy");
-        enemy1.setBounce(.1);
-
-
-        enemy2 = this.physics.add.sprite(1097, 662, "walkingEnemy");
-        enemy2.setBounce(.1);
+        // enemy1 = this.physics.add.sprite(537, 669, "walkingEnemy");
+        // enemy1.setBounce(.1);
 
 
-        enemy3 = this.physics.add.sprite(10, 560, "walkingEnemy");
-        enemy3.setBounce(.1);
+        // enemy2 = this.physics.add.sprite(1097, 662, "walkingEnemy");
+        // enemy2.setBounce(.1);
+
+
+        // enemy3 = this.physics.add.sprite(10, 560, "walkingEnemy");
+        // enemy3.setBounce(.1);
 
 
         // set the boundaries of our game world
@@ -157,34 +158,34 @@ class Scene4 extends Phaser.Scene {
 
         // create the player sprite    
         player = this.physics.add.sprite(playerX, playerY, 'player').setScale(.3);
-        player.setCollideWorldBounds = true;
+        player.body.collideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
 
         this.physics.add.collider(worldLayer, player);
 
-        this.physics.add.collider(exitLayer, player, nextScene, null, this);
+        this.physics.add.collider(exitLayer, player, nextScene4, null, this);
 
         this.physics.add.collider(enemySpikeLayer, player, playerSpiked, null, this);
 
-        this.physics.add.collider(player, enemy, playerDied, null, this);
-        this.physics.add.collider(player, enemy1, playerDied, null, this);
-        this.physics.add.collider(player, enemy2, playerDied, null, this);
-        this.physics.add.collider(player, enemy3, playerDied, null, this);
+        // this.physics.add.collider(player, enemy, playerDied, null, this);
+        // this.physics.add.collider(player, enemy1, playerDied, null, this);
+        // this.physics.add.collider(player, enemy2, playerDied, null, this);
+        // this.physics.add.collider(player, enemy3, playerDied, null, this);
 
-        this.physics.add.collider(worldLayer, enemy);
-        this.physics.add.collider(worldLayer, enemy1);
-        this.physics.add.collider(worldLayer, enemy2);
-        this.physics.add.collider(worldLayer, enemy3);
+        // this.physics.add.collider(worldLayer, enemy);
+        // this.physics.add.collider(worldLayer, enemy1);
+        // this.physics.add.collider(worldLayer, enemy2);
+        // this.physics.add.collider(worldLayer, enemy3);
 
-        this.physics.add.collider(leftColliderLayer, enemy);
-        this.physics.add.collider(rightColliderLayer, enemy);
+        // this.physics.add.collider(leftColliderLayer, enemy);
+        // this.physics.add.collider(rightColliderLayer, enemy);
 
-        this.physics.add.collider(leftColliderLayer1, enemy1);
-        this.physics.add.collider(rightColliderLayer1, enemy1);
+        // this.physics.add.collider(leftColliderLayer1, enemy1);
+        // this.physics.add.collider(rightColliderLayer1, enemy1);
 
-        this.physics.add.collider(leftColliderLayer2, enemy2);
-        this.physics.add.collider(rightColliderLayer2, enemy2);
+        // this.physics.add.collider(leftColliderLayer2, enemy2);
+        // this.physics.add.collider(rightColliderLayer2, enemy2);
 
 
         coinsLayer.setTileIndexCallback(251, collectCoin, this);
@@ -196,22 +197,22 @@ class Scene4 extends Phaser.Scene {
         enemySpikeLayer.setTileIndexCallback(103, playerDied, this);
         this.physics.add.overlap(player, enemySpikeLayer);
 
-        leftColliderLayer.setTileIndexCallback(249, enemyCollidedLeft, this);
-        this.physics.add.overlap(enemy, leftColliderLayer);
-        rightColliderLayer.setTileIndexCallback(249, enemyCollidedRight, this);
-        this.physics.add.overlap(enemy, rightColliderLayer);
+        // leftColliderLayer.setTileIndexCallback(249, enemyCollidedLeft, this);
+        // this.physics.add.overlap(enemy, leftColliderLayer);
+        // rightColliderLayer.setTileIndexCallback(249, enemyCollidedRight, this);
+        // this.physics.add.overlap(enemy, rightColliderLayer);
 
-        leftColliderLayer1.setTileIndexCallback(249, enemyCollidedLeft1, this);
-        this.physics.add.overlap(enemy1, leftColliderLayer1);
-        rightColliderLayer1.setTileIndexCallback(249, enemyCollidedRight1, this);
-        this.physics.add.overlap(enemy1, rightColliderLayer1);
+        // leftColliderLayer1.setTileIndexCallback(249, enemyCollidedLeft1, this);
+        // this.physics.add.overlap(enemy1, leftColliderLayer1);
+        // rightColliderLayer1.setTileIndexCallback(249, enemyCollidedRight1, this);
+        // this.physics.add.overlap(enemy1, rightColliderLayer1);
 
 
 
-        leftColliderLayer2.setTileIndexCallback(249, enemyCollidedLeft2M2, this);
-        this.physics.add.overlap(enemy1, leftColliderLayer2);
-        rightColliderLayer2.setTileIndexCallback(249, enemyCollidedRight2M2, this);
-        this.physics.add.overlap(enemy1, rightColliderLayer2);
+        // leftColliderLayer2.setTileIndexCallback(249, enemyCollidedLeft2M2, this);
+        // this.physics.add.overlap(enemy1, leftColliderLayer2);
+        // rightColliderLayer2.setTileIndexCallback(249, enemyCollidedRight2M2, this);
+        // this.physics.add.overlap(enemy1, rightColliderLayer2);
 
 
 
@@ -265,29 +266,29 @@ class Scene4 extends Phaser.Scene {
 
 
 
-        enemy.body.setVelocityX(-50);
+        // enemy.body.setVelocityX(-50);
 
-        enemy1.body.setVelocityX(+50);
-        enemy1.flipX = true;
-
-
-        enemy2.body.setVelocityX(+100);
-        enemy2.flipX = true;
+        // enemy1.body.setVelocityX(+50);
+        // enemy1.flipX = true;
 
 
-        enemy3.body.setVelocityX(-100);
+        // enemy2.body.setVelocityX(+100);
+        // enemy2.flipX = true;
+
+
+        // enemy3.body.setVelocityX(-100);
 
 
 
     }
     update(time, delta) {
-        if (lives == 0) {
+        if (lives == 0 || lives < 0) {
             this.time.addEvent({
                 delay: 500,
                 callback: () => {
                     this.input.keyboard.enabled = true;
                     this.themeMusic.stop();
-                    this.scene.start("bootGame");
+                    this.scene.start("gameOver");
                 },
 
             });
@@ -315,9 +316,9 @@ class Scene4 extends Phaser.Scene {
     }
 }
 
-function nextScene() {
+function nextScene4() {
     highScoreSetter();
-    score = 0;
+    // score = 0;
     this.themeMusic.stop();
     playerX = 1807;
     playerY = 450;

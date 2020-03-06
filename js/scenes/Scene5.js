@@ -35,6 +35,7 @@ class Scene5 extends Phaser.Scene {
             'assets/Audio/coinCollect.ogg'
         ]);
 
+
         this.load.audio('jumpSFX', [
             'assets/Audio/SFXjump.ogg'
         ]);
@@ -51,7 +52,9 @@ class Scene5 extends Phaser.Scene {
     }
 
     create() {
-
+        deathInMap2 = 0;
+        deathInMap3 = 0;
+        deathInMap4 = 1;
         this.enemyDieSound = this.sound.add("enemyDieSFX");
         this.playerDieSound = this.sound.add("playerDieSFX");
         this.collectCoin = this.sound.add("coinSFX");
@@ -136,18 +139,18 @@ class Scene5 extends Phaser.Scene {
         enemyWalkingLayer = map4.createDynamicLayer('enemyWalking', enemyWalk, 0, 0);
         enemyWalkingLayer.setCollisionByExclusion([-1]);
 
-        enemy = this.physics.add.sprite(1717, 647, "walkingEnemy");
+        enemy = this.physics.add.sprite(748, 679, "walkingEnemy");
         enemy.setBounce(.1);
 
-        enemy1 = this.physics.add.sprite(537, 669, "walkingEnemy");
+        enemy1 = this.physics.add.sprite(20000000, 669, "walkingEnemy");
         enemy1.setBounce(.1);
 
 
-        enemy2 = this.physics.add.sprite(1097, 662, "walkingEnemy");
+        enemy2 = this.physics.add.sprite(20000000, 662, "walkingEnemy");
         enemy2.setBounce(.1);
 
 
-        enemy3 = this.physics.add.sprite(10, 560, "walkingEnemy");
+        enemy3 = this.physics.add.sprite(20000000, 560, "walkingEnemy");
         enemy3.setBounce(.1);
 
 
@@ -157,13 +160,13 @@ class Scene5 extends Phaser.Scene {
 
         // create the player sprite    
         player = this.physics.add.sprite(50, 655, 'player').setScale(.3);
-        player.setCollideWorldBounds = true;
+        player.body.collideWorldBounds = true;
         player.setBounce(0.2); // our player will bounce from items10
 
 
         this.physics.add.collider(worldLayer, player);
 
-        this.physics.add.collider(exitLayer, player, nextScene, null, this);
+        this.physics.add.collider(exitLayer, player, nextScene5, null, this);
 
         this.physics.add.collider(enemySpikeLayer, player, playerSpiked, null, this);
 
@@ -265,7 +268,7 @@ class Scene5 extends Phaser.Scene {
 
 
 
-        enemy.body.setVelocityX(-50);
+        enemy.body.setVelocityX(-100);
 
         enemy1.body.setVelocityX(+50);
         enemy1.flipX = true;
@@ -281,13 +284,14 @@ class Scene5 extends Phaser.Scene {
 
     }
     update(time, delta) {
-        if (lives == 0) {
+        if (lives == 0 || lives < 0) {
             this.time.addEvent({
                 delay: 500,
                 callback: () => {
                     this.input.keyboard.enabled = true;
                     this.themeMusic.stop();
-                    this.scene.start("bootGame");
+                    highScoreSetter();
+                    this.scene.start("gameOver");
                 },
 
             });
@@ -315,11 +319,11 @@ class Scene5 extends Phaser.Scene {
     }
 }
 
-function nextScene() {
-    // highScoreSetter();
-    // score = 0;
+function nextScene5() {
+    highScoreSetter();
+    score = 0;
     this.themeMusic.stop();
     playerX = 1807;
     playerY = 450;
-    this.scene.start('2ndMap')
+    this.scene.start('congrats')
 }
